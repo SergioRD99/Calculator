@@ -5,6 +5,8 @@ export default function useOrder () {
 
     const [order, setOrder] = useState<OrderItem[]>([])
 
+    const [tip, setTip] = useState(0)
+
 
     const addItem = (item: MenuItem) =>{
 
@@ -20,9 +22,21 @@ export default function useOrder () {
             setOrder([...order, newItem])
         }
     }
-    console.log(order)
+
+    const removeItem = (id:MenuItem['id']) =>{
+       setOrder(order.filter(item => item.id !== id))
+    }
+
+    const clearOrder = () =>{
+        setOrder([])
+        setTip(0)
+    }
     return{
         order,
-        addItem
+        tip,
+        setTip,
+        addItem,
+        removeItem,
+        clearOrder
     }
 }

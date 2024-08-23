@@ -1,10 +1,11 @@
 import { formatCurrency } from "../Helpers"
-import { OrderItem } from "../types"
+import { MenuItem, OrderItem } from "../types"
 
 type OrderContentProps ={
-    order : OrderItem[]
+    order : OrderItem[],
+    removeItem : (id:MenuItem['id']) => void 
 }
-export default function Contents({order}: OrderContentProps) {
+export default function Contents({order,removeItem}: OrderContentProps) {
 
 
   return (
@@ -12,11 +13,7 @@ export default function Contents({order}: OrderContentProps) {
         <h2 className="font-black text-4xl">Consumo</h2>
 
         <div className="space-y-3 mt-10">
-            {order.length === 0 ?  
-            
-                <p className="text-center">La orden esta vacia</p>
-            :
-                (order.map(item => (
+            {order.map(item => (
                     <div 
                     key={item.id}
                     className="flex justify-between items-center border-t border-gray-200 py-5 last-of-type:border-b">
@@ -30,11 +27,12 @@ export default function Contents({order}: OrderContentProps) {
                         </div>
                         <button
                         className="bg-red-600 h-8 rounded-full text-white font-black"
-                        >X</button>
+                        onClick={()=>removeItem(item.id)}
+                        >
+                            X
+                        </button>
                     </div>
-                )))
-
-            }
+                ))}
         </div>
     </div>
   )
