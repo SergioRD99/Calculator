@@ -1,0 +1,27 @@
+trigger:
+  branches:
+    include:
+      - main  # O la rama que estés utilizando para producción
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UseNode@2
+  inputs:
+    versionSpec: '16.x'  # Asegúrate de usar la versión de Node.js que necesites
+    addToPath: true
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Install and Build'
+
+- task: AzureStaticWebApp@0
+  inputs:
+    azureSubscription: 'MyAzureConnection'  # Esto lo configuras en Azure DevOps
+    app_location: 'calculadora_propinas'  # Ruta de tu aplicación (a menudo es la raíz)
+    api_location: 'null'  # Si no tienes un backend API
+    output_location: 'dist'  # Ruta donde se genera la build de React
+    app_artifact_location: '$(Build.ArtifactStagingDirectory)/build'
+    token: $(685a694c25da8e631b559e7828f107a222230ea7b8d6df5f546bcbe27e59441006-ebcfff37-5211-40a2-9e5c-f29f4ed15f7e01024120a08d1310)  # Aquí usarás el token de implementación
